@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--
+  README.html - User guide for the Nadlan scraper.
+  Static documentation page. Open directly in any browser.
+  All user-facing text is in Hebrew (RTL); code comments are in English.
+-->
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>סורק עסקאות נדל"ן — מדריך הפעלה</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --header: #1e3a8a;
+      --accent: #2563eb;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+      --text: #0f172a;
+      --muted: #64748b;
+      --code-bg: #0b1021;
+      --code-fg: #cbd5e1;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Arial", sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--header);
+      color: #fff;
+      padding: 26px 24px;
+    }
+    header h1 { margin: 0; font-size: 26px; }
+    header p { margin: 6px 0 0; color: #c7d2fe; font-size: 15px; }
+    main { max-width: 920px; margin: 0 auto; padding: 24px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 19px;
+      color: var(--header);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+    h3 { margin: 18px 0 6px; font-size: 16px; }
+    ol, ul { margin: 10px 0; padding-inline-start: 22px; }
+    li { margin-bottom: 8px; }
+    p { margin: 8px 0; }
+    code {
+      background: #eef2f7;
+      color: #b91c1c;
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13.5px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      direction: ltr;
+      display: inline-block;
+    }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-fg);
+      font-family: "Consolas", "Courier New", monospace;
+      font-size: 13.5px;
+      direction: ltr;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+    .badge {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      border-radius: 7px;
+      padding: 5px 12px;
+      margin-inline-end: 6px;
+    }
+    .b-start { background: var(--accent); }
+    .b-run { background: var(--green); }
+    .b-stop { background: var(--red); }
+    .b-excel { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
+    .steps { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+    .step {
+      flex: 1 1 200px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .step span.num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step b { color: var(--text); display: block; margin: 4px 0; font-size: 15px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      text-align: right;
+    }
+    th { background: #f8fafc; color: var(--header); }
+    .note {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 9px;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #92400e;
+    }
+    .note b { color: #78350f; }
+    .ok { color: var(--green); font-weight: 700; }
+    footer {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px 30px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>סורק עסקאות נדל"ן — רשות המיסים</h1>
+    <p>מדריך הפעלה ושימוש</p>
+  </header>
+
+  <main>
+    <!-- What it does -->
+    <section class="card">
+      <h2>מה הכלי עושה?</h2>
+      <p>
+        הכלי אוסף אוטומטית את כל עסקאות הנדל"ן מתוצאות חיפוש שביצעת באתר
+        רשות המיסים, עובר על כל העמודים, נכנס לכל עסקה, מחלץ את כל הפרטים
+        ושומר את הכול לקובץ <code>output.xlsx</code> מסודר.
+      </p>
+      <p>
+        אתה מבצע את החיפוש בעצמך בדפדפן (התחברות, סינון וכו'), והכלי
+        עושה את כל העבודה השחורה של איסוף הנתונים מכל עמודי התוצאות.
+      </p>
+    </section>
+
+    <!-- Quick start -->
+    <section class="card">
+      <h2>איך מתחילים?</h2>
+      <p>פשוט לחיצה כפולה על הקובץ:</p>
+      <pre><code>start_ui.bat</code></pre>
+      <p>
+        זה מפעיל שרת מקומי קטן ופותח את ממשק ההפעלה בדפדפן בכתובת
+        <code>http://127.0.0.1:8765</code>. אפשר גם להפעיל ידנית:
+      </p>
+      <pre><code>python nadlan_ui.py</code></pre>
+    </section>
+
+    <!-- Steps -->
+    <section class="card">
+      <h2>שלבי השימוש</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <b>פתח דפדפן וחיפוש</b>
+          לחיצה על <span class="badge b-start">פתח דפדפן וחיפוש</span>
+          פותחת חלון Edge בעמוד הפתיחה של רשות המיסים.
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <b>בצע את החיפוש</b>
+          התחבר ומלא את טופס החיפוש באתר עד שטבלת התוצאות מופיעה על המסך.
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <b>הרץ סריקה</b>
+          חזור לממשק ולחץ <span class="badge b-run">הרץ סריקה</span>.
+          הכלי עובר על כל העמודים ומחלץ את כל העסקאות.
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <b>פתח Excel</b>
+          בסיום לחץ <span class="badge b-excel">📂 פתח Excel</span>
+          כדי לפתוח את הקובץ עם התוצאות.
+        </div>
+      </div>
+      <p style="margin-top:14px;">
+        אפשר לעצור באמצע בכל רגע עם הכפתור
+        <span class="badge b-stop">עצור</span>.
+      </p>
+    </section>
+
+    <!-- Buttons reference -->
+    <section class="card">
+      <h2>הכפתורים בממשק</h2>
+      <table>
+        <tr><th>כפתור</th><th>מה הוא עושה</th></tr>
+        <tr><td>פתח דפדפן וחיפוש</td><td>פותח את Edge בעמוד הפתיחה. לחיצה חוזרת פותחת לשונית חדשה באותה כתובת.</td></tr>
+        <tr><td>הרץ סריקה</td><td>מאמת שטבלת התוצאות מוצגת, ואז אוסף את כל העסקאות מכל העמודים.</td></tr>
+        <tr><td>עצור</td><td>עוצר את הסריקה הנוכחית.</td></tr>
+        <tr><td>📂 פתח Excel</td><td>פותח את קובץ <code>output.xlsx</code> שנשמר.</td></tr>
+      </table>
+    </section>
+
+    <!-- Output -->
+    <section class="card">
+      <h2>קובץ הפלט</h2>
+      <p>הקובץ <code>output.xlsx</code> נשמר בתיקיית הפרויקט ומכיל שני גליונות:</p>
+      <ul>
+        <li><b>עסקאות שבוצעו</b> — טבלת תקציר עם 11 עמודות עיקריות (גוש/חלקה, כתובת, תאריך, גודל, קומה, מחיר, מס' חדרים, שנת בנייה ועוד).</li>
+        <li><b>מורחב</b> — כל העמודות העיקריות בתוספת כל שדות הפירוט המלאים מכל עסקה.</li>
+      </ul>
+    </section>
+
+    <!-- Requirements -->
+    <section class="card">
+      <h2>דרישות והתקנה</h2>
+      <p>הכלי משתמש ב‑Python ובשתי ספריות חיצוניות בלבד:</p>
+      <pre><code>playwright>=1.40
+openpyxl>=3.1</code></pre>
+      <p>התקנה לסביבה (אם צריך להקים מחדש):</p>
+      <pre><code>py -3.14 -m venv venv
+.\venv\Scripts\python.exe -m pip install -r requirements.txt</code></pre>
+      <p>
+        הכלי מפעיל את הדפדפן <b>Microsoft Edge</b> המותקן במחשב
+        (<code>channel="msedge"</code>), כך שאין צורך להוריד דפדפן נוסף.
+      </p>
+    </section>
+
+    <!-- Notes / troubleshooting -->
+    <section class="card">
+      <h2>הערות ופתרון תקלות</h2>
+      <ul>
+        <li>הכלי משתמש בפרופיל Edge נפרד ב‑<code>%LOCALAPPDATA%\nadlan_scraper\browser-profile</code> — לא בתיקיית OneDrive — כדי למנוע נעילות סנכרון.</li>
+        <li>אם Edge מציג "Opening in existing browser session" — סגור חלונות Edge פתוחים ונסה שוב.</li>
+        <li>אם הסריקה לא מתחילה, ודא שטבלת התוצאות באמת מוצגת בלשונית לפני לחיצה על "הרץ סריקה".</li>
+      </ul>
+      <div class="note" style="margin-top:14px;">
+        <b>שים לב:</b> תיקיית <code>venv</code> נמצאת בתוך OneDrive ועלולה
+        להיעלם בסנכרון. אם הכלי מפסיק לרוץ, הקם את הסביבה מחדש לפי
+        שלב ההתקנה למעלה.
+      </div>
+    </section>
+
+    <!-- Project files -->
+    <section class="card">
+      <h2>קבצי הפרויקט</h2>
+      <table>
+        <tr><th>קובץ</th><th>תפקיד</th></tr>
+        <tr><td><code>nadlan_scraper.py</code></td><td>לוגיקת הסריקה וכתיבת ה‑Excel.</td></tr>
+        <tr><td><code>nadlan_ui.py</code></td><td>שרת מקומי שמנהל את הדפדפן ומגיש את הממשק.</td></tr>
+        <tr><td><code>index.html</code></td><td>ממשק ההפעלה (UI).</td></tr>
+        <tr><td><code>start_ui.bat</code></td><td>קובץ הפעלה בלחיצה כפולה.</td></tr>
+        <tr><td><code>requirements.txt</code></td><td>רשימת התלויות.</td></tr>
+        <tr><td><code>README.html</code></td><td>המדריך הזה.</td></tr>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    סורק עסקאות נדל"ן — רשות המיסים · מדריך פנימי
+  </footer>
+</body>
+</html>

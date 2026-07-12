@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Scraper output files
+output.xlsx
+output_*.xlsx
+test_out.xlsx
+
+# Editor / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
