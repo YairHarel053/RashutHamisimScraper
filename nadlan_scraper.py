@@ -1029,12 +1029,20 @@ def make_output_path(directory: str, info: str = "") -> str:
     """
     Build a unique Excel path for a single run, so running the scraper several
     times on different searches produces several files instead of overwriting.
+    Files are stored in an dedicated outputs folder to keep the project root
+    clean and avoid polluting Git with generated Excel reports.
     Format: output_<city>_<YYYYMMDD_HHMMSS>.xlsx (city is optional).
     """
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     label = _slug_from_info(info)
     name = f"output_{label}_{stamp}.xlsx" if label else f"output_{stamp}.xlsx"
-    return os.path.join(directory, name)
+
+    base_dir = directory
+    if os.path.basename(os.path.normpath(directory)) != "outputs":
+        base_dir = os.path.join(directory, "outputs")
+
+    os.makedirs(base_dir, exist_ok=True)
+    return os.path.join(base_dir, name)
 
 
 def _slug_from_info(info: str) -> str:
