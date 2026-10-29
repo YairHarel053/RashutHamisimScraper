@@ -104,6 +104,7 @@ class BrowserController(threading.Thread):
             last = self._last_output
             return {
                 "state": self._state,
+                "browserOpen": self._browser_ctx is not None,
                 "logs": self._logs[-600:],
                 "progress": dict(self._progress),
                 "output": bool(last and os.path.exists(last)),
